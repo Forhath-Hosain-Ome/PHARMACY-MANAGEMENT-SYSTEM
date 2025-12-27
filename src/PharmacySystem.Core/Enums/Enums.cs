@@ -1,8 +1,5 @@
 namespace PharmacySystem.Core.Enums;
 
-/// <summary>
-/// Categories of medications available in the pharmacy
-/// </summary>
 public enum MedicationCategory
 {
     Antibiotic,
@@ -17,10 +14,6 @@ public enum MedicationCategory
     Endocrine,
     Other
 }
-
-/// <summary>
-/// Status of a prescription
-/// </summary>
 public enum PrescriptionStatus
 {
     Pending,
@@ -29,10 +22,6 @@ public enum PrescriptionStatus
     Cancelled,
     Expired
 }
-
-/// <summary>
-/// Status of a transaction
-/// </summary>
 public enum TransactionStatus
 {
     Pending,
@@ -41,10 +30,6 @@ public enum TransactionStatus
     PartiallyRefunded,
     Cancelled
 }
-
-/// <summary>
-/// Roles available in the system
-/// </summary>
 public enum UserRole
 {
     Admin,
@@ -53,10 +38,6 @@ public enum UserRole
     Patient,
     Manager
 }
-
-/// <summary>
-/// Payment methods accepted
-/// </summary>
 public enum PaymentMethod
 {
     Cash,
