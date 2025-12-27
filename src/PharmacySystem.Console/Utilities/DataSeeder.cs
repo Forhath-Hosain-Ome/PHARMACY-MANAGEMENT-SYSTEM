@@ -6,15 +6,8 @@ using PharmacySystem.Core.Enums;
 
 namespace PharmacySystem.Console.Utilities;
 
-/// <summary>
-/// Static class for seeding initial sample data
-/// Demonstrates static methods for data initialization
-/// </summary>
 public static class DataSeeder
 {
-    /// <summary>
-    /// Seeds sample patients
-    /// </summary>
     public static List<Patient> SeedPatients()
     {
         var patients = new List<Patient>
@@ -41,9 +34,6 @@ public static class DataSeeder
         return patients;
     }
 
-    /// <summary>
-    /// Seeds sample pharmacists
-    /// </summary>
     public static List<Pharmacist> SeedPharmacists()
     {
         var pharmacists = new List<Pharmacist>
@@ -67,9 +57,6 @@ public static class DataSeeder
         return pharmacists;
     }
 
-    /// <summary>
-    /// Seeds sample prescription medications
-    /// </summary>
     public static List<PrescriptionMedicine> SeedPrescriptionMedicines()
     {
         var medications = new List<PrescriptionMedicine>
@@ -125,9 +112,6 @@ public static class DataSeeder
         return medications;
     }
 
-    /// <summary>
-    /// Seeds sample OTC medications
-    /// </summary>
     public static List<OTCMedicine> SeedOTCMedicines()
     {
         var medications = new List<OTCMedicine>
@@ -189,9 +173,6 @@ public static class DataSeeder
         return medications;
     }
 
-    /// <summary>
-    /// Seeds sample inventory for medications
-    /// </summary>
     public static List<Inventory> SeedInventory(List<Medication> medications)
     {
         var inventories = new List<Inventory>();
@@ -218,9 +199,6 @@ public static class DataSeeder
         return inventories;
     }
 
-    /// <summary>
-    /// Seeds sample suppliers
-    /// </summary>
     public static List<Supplier> SeedSuppliers()
     {
         var suppliers = new List<Supplier>
@@ -259,9 +237,6 @@ public static class DataSeeder
         return suppliers;
     }
 
-    /// <summary>
-    /// Gets a welcome message
-    /// </summary>
     public static string GetWelcomeMessage()
     {
         return @"
@@ -288,9 +263,6 @@ Sample data has been loaded for demonstration purposes.
 ";
     }
 
-    /// <summary>
-    /// Gets system statistics message
-    /// </summary>
     public static string GetSystemStats(int patients, int pharmacists, int medications, int prescriptions, int transactions)
     {
         return $@"
