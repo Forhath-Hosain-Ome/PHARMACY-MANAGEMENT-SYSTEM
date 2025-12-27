@@ -3,68 +3,23 @@ using PharmacySystem.Core.Entities.ValueObjects;
 
 namespace PharmacySystem.Core.Entities.Operations;
 
-/// <summary>
-/// Represents a supplier of medications
-/// </summary>
 public class Supplier : Entity
 {
-    /// <summary>
-    /// Supplier name
-    /// </summary>
     public string Name { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Contact person name
-    /// </summary>
     public string? ContactPerson { get; private set; }
-
-    /// <summary>
-    /// Email address
-    /// </summary>
     public string? Email { get; private set; }
-
-    /// <summary>
-    /// Phone number
-    /// </summary>
     public string? PhoneNumber { get; private set; }
-
-    /// <summary>
-    /// Physical address
-    /// </summary>
     public Address? Address { get; private set; }
-
-    /// <summary>
-    /// Website URL
-    /// </summary>
     public string? Website { get; private set; }
-
-    /// <summary>
-    /// Supplier rating (0-5)
-    /// </summary>
     public decimal Rating { get; private set; }
-
-    /// <summary>
-    /// Whether supplier is currently active
-    /// </summary>
     public bool IsActive { get; private set; }
-
-    /// <summary>
-    /// Navigation property for supplied inventory
-    /// </summary>
     public virtual ICollection<Inventory> SuppliedInventory { get; private set; } = new List<Inventory>();
-
-    /// <summary>
-    /// Private constructor for Entity Framework Core
-    /// </summary>
     private Supplier() : base()
     {
         IsActive = true;
         Rating = 3.0m; // Default rating
     }
 
-    /// <summary>
-    /// Constructor with name only (Constructor Overloading - 1)
-    /// </summary>
     public Supplier(string name) : this()
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -73,18 +28,12 @@ public class Supplier : Entity
         Name = name;
     }
 
-    /// <summary>
-    /// Constructor with contact information (Constructor Overloading - 2)
-    /// </summary>
     public Supplier(string name, string contactPerson, string email) : this(name)
     {
         ContactPerson = contactPerson;
         Email = email;
     }
 
-    /// <summary>
-    /// Constructor with full contact details (Constructor Overloading - 3)
-    /// </summary>
     public Supplier(string name, string contactPerson, string email, 
                    string phoneNumber, Address address) : this(name, contactPerson, email)
     {
@@ -92,9 +41,6 @@ public class Supplier : Entity
         Address = address;
     }
 
-    /// <summary>
-    /// Updates supplier information
-    /// </summary>
     public void UpdateSupplierInfo(string? contactPerson, string? email, 
                                    string? phoneNumber, Address? address)
     {
@@ -106,18 +52,12 @@ public class Supplier : Entity
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Updates website
-    /// </summary>
     public void UpdateWebsite(string website)
     {
         Website = website;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Updates rating
-    /// </summary>
     public void UpdateRating(decimal newRating)
     {
         if (newRating < 0 || newRating > 5)
@@ -127,27 +67,19 @@ public class Supplier : Entity
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Activates the supplier
-    /// </summary>
     public void Activate()
     {
         IsActive = true;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Deactivates the supplier
-    /// </summary>
     public void Deactivate()
     {
         IsActive = false;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Gets supplier information
-    /// </summary>
+
     public string GetSupplierInfo()
     {
         return $"Supplier: {Name}\n" +
