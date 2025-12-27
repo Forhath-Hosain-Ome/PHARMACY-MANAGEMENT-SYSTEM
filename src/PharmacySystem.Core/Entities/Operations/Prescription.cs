@@ -7,77 +7,25 @@ using PharmacySystem.Core.Interfaces;
 
 namespace PharmacySystem.Core.Entities.Operations;
 
-/// <summary>
-/// Represents a prescription in the pharmacy system
-/// Demonstrates copy constructor and implements ISearchable
-/// </summary>
 public class Prescription : Entity, ISearchable
 {
-    /// <summary>
-    /// Unique prescription number
-    /// </summary>
     public string PrescriptionNumber { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Foreign key to Patient
-    /// </summary>
     public int PatientId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Patient
-    /// </summary>
     public virtual Patient? Patient { get; private set; }
-
-    /// <summary>
-    /// Foreign key to Pharmacist
-    /// </summary>
     public int PharmacistId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Pharmacist
-    /// </summary>
     public virtual Pharmacist? Pharmacist { get; private set; }
-
-    /// <summary>
-    /// Date prescription was written
-    /// </summary>
     public DateTime PrescriptionDate { get; private set; }
-
-    /// <summary>
-    /// Status of the prescription
-    /// </summary>
     public PrescriptionStatus Status { get; private set; }
-
-    /// <summary>
-    /// Prescribing doctor's name
-    /// </summary>
     public string? DoctorName { get; private set; }
-
-    /// <summary>
-    /// Doctor's license number
-    /// </summary>
     public string? DoctorLicenseNumber { get; private set; }
-
-    /// <summary>
-    /// Collection of medications in this prescription
-    /// </summary>
     public virtual ICollection<PrescriptionItem> Items { get; private set; } = new List<PrescriptionItem>();
 
-    /// <summary>
-    /// Additional notes
-    /// </summary>
     public string? Notes { get; private set; }
 
-    /// <summary>
-    /// Private constructor for Entity Framework Core
-    /// </summary>
     private Prescription() : base()
     {
     }
 
-    /// <summary>
-    /// Constructor with basic information (Constructor Overloading - 1)
-    /// </summary>
     public Prescription(int patientId, int pharmacistId)
     {
         if (patientId <= 0)
@@ -93,9 +41,7 @@ public class Prescription : Entity, ISearchable
         PrescriptionNumber = GeneratePrescriptionNumber();
     }
 
-    /// <summary>
-    /// Constructor with doctor information (Constructor Overloading - 2)
-    /// </summary>
+
     public Prescription(int patientId, int pharmacistId, string doctorName, 
                        string doctorLicenseNumber)
         : this(patientId, pharmacistId)
@@ -104,10 +50,7 @@ public class Prescription : Entity, ISearchable
         DoctorLicenseNumber = doctorLicenseNumber;
     }
 
-    /// <summary>
-    /// Copy constructor - creates a deep copy of prescription (Copy Constructor)
-    /// Useful for refills or similar prescriptions
-    /// </summary>
+
     public Prescription(Prescription other)
     {
         if (other == null)
@@ -134,17 +77,13 @@ public class Prescription : Entity, ISearchable
         Notes = $"Refill of prescription {other.PrescriptionNumber}";
     }
 
-    /// <summary>
-    /// Generates a unique prescription number
-    /// </summary>
+
     private static string GeneratePrescriptionNumber()
     {
         return $"RX-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
     }
 
-    /// <summary>
-    /// Adds a medication to the prescription
-    /// </summary>
+
     public void AddMedication(int medicationId, int quantity, string dosage, 
                             string frequency, string duration, string? instructions = null)
     {
@@ -162,9 +101,7 @@ public class Prescription : Entity, ISearchable
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Removes a medication from the prescription
-    /// </summary>
+
     public bool RemoveMedication(int medicationId)
     {
         if (Status != PrescriptionStatus.Pending)
@@ -179,9 +116,7 @@ public class Prescription : Entity, ISearchable
         return true;
     }
 
-    /// <summary>
-    /// Dispenses the prescription
-    /// </summary>
+
     public bool Dispense()
     {
         if (Status != PrescriptionStatus.Pending)
@@ -195,9 +130,7 @@ public class Prescription : Entity, ISearchable
         return true;
     }
 
-    /// <summary>
-    /// Cancels the prescription
-    /// </summary>
+
     public void Cancel(string reason)
     {
         if (Status == PrescriptionStatus.Dispensed)
@@ -208,9 +141,7 @@ public class Prescription : Entity, ISearchable
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Calculates total cost of prescription
-    /// </summary>
+
     public Money GetTotalCost()
     {
         if (!Items.Any())
@@ -221,9 +152,7 @@ public class Prescription : Entity, ISearchable
         return new Money(0);
     }
 
-    /// <summary>
-    /// Validates the prescription
-    /// </summary>
+
     public bool Validate()
     {
         if (!Items.Any())
@@ -241,18 +170,14 @@ public class Prescription : Entity, ISearchable
         return true;
     }
 
-    /// <summary>
-    /// Updates notes
-    /// </summary>
+
     public void UpdateNotes(string notes)
     {
         Notes = notes;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Gets prescription summary
-    /// </summary>
+
     public string GetPrescriptionSummary()
     {
         return $"Prescription: {PrescriptionNumber}\n" +
@@ -268,17 +193,13 @@ public class Prescription : Entity, ISearchable
 
     #region ISearchable Implementation
 
-    /// <summary>
-    /// Gets all searchable text for this prescription
-    /// </summary>
+
     public string GetSearchableText()
     {
         return $"{PrescriptionNumber} {DoctorName} {DoctorLicenseNumber} {PatientId} {Status}".ToLower();
     }
 
-    /// <summary>
-    /// Checks if prescription matches the search term
-    /// </summary>
+
     public bool MatchesSearch(string searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
@@ -291,61 +212,21 @@ public class Prescription : Entity, ISearchable
     #endregion
 }
 
-/// <summary>
-/// Represents an individual medication item in a prescription
-/// </summary>
+
 public class PrescriptionItem : Entity
 {
-    /// <summary>
-    /// Foreign key to Prescription
-    /// </summary>
     public int PrescriptionId { get; private set; }
-
-    /// <summary>
-    /// Foreign key to Medication
-    /// </summary>
     public int MedicationId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Medication
-    /// </summary>
     public virtual Medication? Medication { get; private set; }
-
-    /// <summary>
-    /// Quantity prescribed
-    /// </summary>
     public int Quantity { get; private set; }
-
-    /// <summary>
-    /// Dosage (e.g., "500mg", "10ml")
-    /// </summary>
     public string Dosage { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Frequency (e.g., "3 times daily")
-    /// </summary>
     public string Frequency { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Duration (e.g., "10 days", "2 weeks")
-    /// </summary>
     public string Duration { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Special instructions
-    /// </summary>
     public string? Instructions { get; private set; }
-
-    /// <summary>
-    /// Private constructor for Entity Framework Core
-    /// </summary>
     private PrescriptionItem() : base()
     {
     }
 
-    /// <summary>
-    /// Constructor for prescription item
-    /// </summary>
     public PrescriptionItem(int prescriptionId, int medicationId, int quantity,
                            string dosage, string frequency, string duration,
                            string? instructions = null)
@@ -377,9 +258,7 @@ public class PrescriptionItem : Entity
         Instructions = instructions;
     }
 
-    /// <summary>
-    /// Copy constructor for prescription item
-    /// </summary>
+
     public PrescriptionItem(PrescriptionItem other)
     {
         if (other == null)
