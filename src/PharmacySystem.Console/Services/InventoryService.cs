@@ -4,11 +4,6 @@ using PharmacySystem.Console.Utilities;
 
 namespace PharmacySystem.Console.Services;
 
-/// <summary>
-/// Service for managing inventory
-/// Demonstrates function overloading with multiple AddStock method variants
-/// Also demonstrates operator overloading usage
-/// </summary>
 public class InventoryService
 {
     private readonly List<Inventory> _inventories;
@@ -21,10 +16,6 @@ public class InventoryService
     }
 
     #region Basic Operations
-
-    /// <summary>
-    /// Creates inventory for a medication
-    /// </summary>
     public void CreateInventory(Inventory inventory)
     {
         if (inventory == null)
@@ -39,18 +30,10 @@ public class InventoryService
         _inventories.Add(inventory);
         ConsoleHelper.PrintSuccess($"Inventory created for medication ID {inventory.MedicationId}");
     }
-
-    /// <summary>
-    /// Gets inventory by medication ID
-    /// </summary>
     public Inventory? GetByMedicationId(int medicationId)
     {
         return _inventories.FirstOrDefault(i => i.MedicationId == medicationId);
     }
-
-    /// <summary>
-    /// Gets all inventories
-    /// </summary>
     public List<Inventory> GetAll()
     {
         return _inventories.ToList();
@@ -59,10 +42,6 @@ public class InventoryService
     #endregion
 
     #region AddStock Methods (Function Overloading)
-
-    /// <summary>
-    /// Adds stock using medication ID (Function Overloading - 1)
-    /// </summary>
     public void AddStock(int medicationId, int quantity)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -82,9 +61,6 @@ public class InventoryService
         );
     }
 
-    /// <summary>
-    /// Adds stock with notes (Function Overloading - 2)
-    /// </summary>
     public void AddStock(int medicationId, int quantity, string notes)
     {
         AddStock(medicationId, quantity);
@@ -97,9 +73,6 @@ public class InventoryService
         }
     }
 
-    /// <summary>
-    /// Adds stock using Medication object (Function Overloading - 3)
-    /// </summary>
     public void AddStock(Medication medication, int quantity)
     {
         if (medication == null)
@@ -108,9 +81,6 @@ public class InventoryService
         AddStock(medication.Id, quantity);
     }
 
-    /// <summary>
-    /// Adds stock with supplier information (Function Overloading - 4)
-    /// </summary>
     public void AddStock(Medication medication, int quantity, int supplierId)
     {
         if (medication == null)
@@ -133,9 +103,6 @@ public class InventoryService
         );
     }
 
-    /// <summary>
-    /// Adds stock with full information (Function Overloading - 5)
-    /// </summary>
     public void AddStock(Medication medication, int quantity, int supplierId, string notes)
     {
         if (medication == null)
@@ -155,9 +122,6 @@ public class InventoryService
 
     #region RemoveStock Methods (Function Overloading)
 
-    /// <summary>
-    /// Removes stock (Function Overloading - 1)
-    /// </summary>
     public bool RemoveStock(int medicationId, int quantity)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -193,9 +157,6 @@ public class InventoryService
         }
     }
 
-    /// <summary>
-    /// Removes stock with reason (Function Overloading - 2)
-    /// </summary>
     public bool RemoveStock(int medicationId, int quantity, string reason)
     {
         bool success = RemoveStock(medicationId, quantity);
@@ -215,9 +176,6 @@ public class InventoryService
 
     #region Demonstration of Operator Overloading
 
-    /// <summary>
-    /// Demonstrates operator overloading usage
-    /// </summary>
     public void DemonstrateOperatorOverloading(int medicationId)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -259,9 +217,6 @@ public class InventoryService
 
     #region Stock Management
 
-    /// <summary>
-    /// Updates reorder settings
-    /// </summary>
     public void UpdateReorderSettings(int medicationId, int reorderLevel, int reorderQuantity)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -275,9 +230,6 @@ public class InventoryService
         ConsoleHelper.PrintSuccess("Reorder settings updated successfully!");
     }
 
-    /// <summary>
-    /// Updates location
-    /// </summary>
     public void UpdateLocation(int medicationId, string location)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -295,9 +247,6 @@ public class InventoryService
 
     #region Queries
 
-    /// <summary>
-    /// Gets low stock items
-    /// </summary>
     public List<Inventory> GetLowStock()
     {
         return _inventories
@@ -305,9 +254,6 @@ public class InventoryService
             .ToList();
     }
 
-    /// <summary>
-    /// Gets items requiring reorder
-    /// </summary>
     public List<Inventory> GetRequiringReorder()
     {
         return _inventories
@@ -315,9 +261,6 @@ public class InventoryService
             .ToList();
     }
 
-    /// <summary>
-    /// Gets out of stock items
-    /// </summary>
     public List<Inventory> GetOutOfStock()
     {
         return _inventories
@@ -325,9 +268,6 @@ public class InventoryService
             .ToList();
     }
 
-    /// <summary>
-    /// Checks stock availability
-    /// </summary>
     public bool IsStockAvailable(int medicationId, int requiredQuantity)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -341,9 +281,6 @@ public class InventoryService
 
     #region Display Methods
 
-    /// <summary>
-    /// Displays inventory details
-    /// </summary>
     public void DisplayInventoryDetails(int medicationId)
     {
         var inventory = GetByMedicationId(medicationId);
@@ -360,9 +297,6 @@ public class InventoryService
         System.Console.WriteLine();
     }
 
-    /// <summary>
-    /// Displays inventory list
-    /// </summary>
     public void DisplayInventoryList(List<Inventory> inventories, string title = "Inventory")
     {
         if (!inventories.Any())
@@ -401,9 +335,6 @@ public class InventoryService
         ConsoleHelper.PrintInfo($"Total: {inventories.Count} inventory record(s)");
     }
 
-    /// <summary>
-    /// Displays low stock report
-    /// </summary>
     public void DisplayLowStockReport()
     {
         var lowStock = GetLowStock();
@@ -421,9 +352,6 @@ public class InventoryService
         DisplayInventoryList(lowStock, "Low Stock Items");
     }
 
-    /// <summary>
-    /// Displays reorder report
-    /// </summary>
     public void DisplayReorderReport()
     {
         var needReorder = GetRequiringReorder();
@@ -441,9 +369,6 @@ public class InventoryService
         DisplayInventoryList(needReorder, "Items Requiring Reorder");
     }
 
-    /// <summary>
-    /// Displays inventory statistics
-    /// </summary>
     public void DisplayStatistics()
     {
         ConsoleHelper.PrintHeader("Inventory Statistics");
