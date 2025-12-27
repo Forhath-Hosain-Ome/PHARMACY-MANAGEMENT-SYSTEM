@@ -6,102 +6,28 @@ using PharmacySystem.Core.Enums;
 
 namespace PharmacySystem.Core.Entities.Operations;
 
-/// <summary>
-/// Represents a sales transaction in the pharmacy
-/// Demonstrates function overloading for discount methods
-/// </summary>
 public class Transaction : Entity
 {
-    /// <summary>
-    /// Unique transaction number
-    /// </summary>
     public string TransactionNumber { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Foreign key to Patient (optional - walk-in customers)
-    /// </summary>
     public int? PatientId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Patient
-    /// </summary>
     public virtual Patient? Patient { get; private set; }
-
-    /// <summary>
-    /// Foreign key to Pharmacist handling the transaction
-    /// </summary>
     public int PharmacistId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Pharmacist
-    /// </summary>
     public virtual Pharmacist? Pharmacist { get; private set; }
-
-    /// <summary>
-    /// Transaction date and time
-    /// </summary>
     public DateTime TransactionDate { get; private set; }
-
-    /// <summary>
-    /// Subtotal before tax and discounts
-    /// </summary>
     public Money SubTotal { get; private set; } = new Money(0);
-
-    /// <summary>
-    /// Tax amount
-    /// </summary>
     public Money TaxAmount { get; private set; } = new Money(0);
-
-    /// <summary>
-    /// Discount amount
-    /// </summary>
     public Money DiscountAmount { get; private set; } = new Money(0);
-
-    /// <summary>
-    /// Total amount after tax and discounts
-    /// </summary>
     public Money TotalAmount { get; private set; } = new Money(0);
-
-    /// <summary>
-    /// Payment method used
-    /// </summary>
     public PaymentMethod PaymentMethod { get; private set; }
-
-    /// <summary>
-    /// Transaction status
-    /// </summary>
     public TransactionStatus Status { get; private set; }
-
-    /// <summary>
-    /// Related prescription ID (if applicable)
-    /// </summary>
     public int? PrescriptionId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Prescription
-    /// </summary>
     public virtual Prescription? Prescription { get; private set; }
-
-    /// <summary>
-    /// Collection of items in this transaction
-    /// </summary>
     public virtual ICollection<TransactionItem> Items { get; private set; } = new List<TransactionItem>();
-
-    /// <summary>
-    /// Additional notes
-    /// </summary>
     public string? Notes { get; private set; }
-
-    /// <summary>
-    /// Private constructor for Entity Framework Core
-    /// </summary>
     private Transaction() : base()
     {
     }
 
-    /// <summary>
-    /// Constructor with pharmacist only (Constructor Overloading - 1)
-    /// </summary>
     public Transaction(int pharmacistId)
     {
         if (pharmacistId <= 0)
@@ -114,9 +40,6 @@ public class Transaction : Entity
         PaymentMethod = PaymentMethod.Cash; // Default
     }
 
-    /// <summary>
-    /// Constructor with patient (Constructor Overloading - 2)
-    /// </summary>
     public Transaction(int pharmacistId, int patientId) : this(pharmacistId)
     {
         if (patientId <= 0)
@@ -125,9 +48,6 @@ public class Transaction : Entity
         PatientId = patientId;
     }
 
-    /// <summary>
-    /// Constructor with prescription (Constructor Overloading - 3)
-    /// </summary>
     public Transaction(int pharmacistId, int patientId, int prescriptionId)
         : this(pharmacistId, patientId)
     {
@@ -137,17 +57,11 @@ public class Transaction : Entity
         PrescriptionId = prescriptionId;
     }
 
-    /// <summary>
-    /// Generates a unique transaction number
-    /// </summary>
     private static string GenerateTransactionNumber()
     {
         return $"TXN-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
     }
 
-    /// <summary>
-    /// Adds an item to the transaction
-    /// </summary>
     public void AddItem(int medicationId, int quantity, Money unitPrice)
     {
         if (medicationId <= 0)
@@ -165,9 +79,6 @@ public class Transaction : Entity
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Removes an item from the transaction
-    /// </summary>
     public bool RemoveItem(int medicationId)
     {
         if (Status != TransactionStatus.Pending)
@@ -183,9 +94,6 @@ public class Transaction : Entity
         return true;
     }
 
-    /// <summary>
-    /// Calculates all totals (subtotal, tax, discount, total)
-    /// </summary>
     public void CalculateTotals()
     {
         if (!Items.Any())
@@ -212,9 +120,6 @@ public class Transaction : Entity
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Applies a fixed discount amount (Function Overloading - 1)
-    /// </summary>
     public void ApplyDiscount(Money amount)
     {
         if (amount == null)
@@ -230,9 +135,6 @@ public class Transaction : Entity
         CalculateTotals();
     }
 
-    /// <summary>
-    /// Applies a percentage discount (Function Overloading - 2)
-    /// </summary>
     public void ApplyDiscount(decimal percentage)
     {
         if (percentage < 0 || percentage > 100)
@@ -243,45 +145,30 @@ public class Transaction : Entity
         CalculateTotals();
     }
 
-    /// <summary>
-    /// Applies a discount with a reason (Function Overloading - 3)
-    /// </summary>
     public void ApplyDiscount(Money amount, string reason)
     {
         ApplyDiscount(amount);
         Notes = $"Discount applied: {reason}";
     }
 
-    /// <summary>
-    /// Applies a percentage discount with a reason (Function Overloading - 4)
-    /// </summary>
     public void ApplyDiscount(decimal percentage, string reason)
     {
         ApplyDiscount(percentage);
         Notes = $"Discount applied ({percentage}%): {reason}";
     }
 
-    /// <summary>
-    /// Removes any applied discount
-    /// </summary>
     public void RemoveDiscount()
     {
         DiscountAmount = new Money(0);
         CalculateTotals();
     }
 
-    /// <summary>
-    /// Sets the payment method
-    /// </summary>
     public void SetPaymentMethod(PaymentMethod method)
     {
         PaymentMethod = method;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Completes the transaction
-    /// </summary>
     public bool Complete()
     {
         if (Status != TransactionStatus.Pending)
@@ -295,9 +182,6 @@ public class Transaction : Entity
         return true;
     }
 
-    /// <summary>
-    /// Processes a refund for the entire transaction
-    /// </summary>
     public bool Refund()
     {
         if (Status != TransactionStatus.Completed)
@@ -308,9 +192,6 @@ public class Transaction : Entity
         return true;
     }
 
-    /// <summary>
-    /// Processes a partial refund
-    /// </summary>
     public bool PartialRefund(Money amount)
     {
         if (Status != TransactionStatus.Completed && Status != TransactionStatus.PartiallyRefunded)
@@ -325,9 +206,6 @@ public class Transaction : Entity
         return true;
     }
 
-    /// <summary>
-    /// Cancels the transaction
-    /// </summary>
     public void Cancel(string reason)
     {
         if (Status == TransactionStatus.Completed)
@@ -338,18 +216,12 @@ public class Transaction : Entity
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Updates notes
-    /// </summary>
     public void UpdateNotes(string notes)
     {
         Notes = notes;
         UpdateTimestamp();
     }
 
-    /// <summary>
-    /// Gets a receipt for the transaction
-    /// </summary>
     public string GetReceipt()
     {
         var receipt = $"===== RECEIPT =====\n";
@@ -386,9 +258,6 @@ public class Transaction : Entity
         return receipt;
     }
 
-    /// <summary>
-    /// Gets transaction summary
-    /// </summary>
     public string GetTransactionSummary()
     {
         return $"Transaction: {TransactionNumber}\n" +
@@ -402,53 +271,20 @@ public class Transaction : Entity
     }
 }
 
-/// <summary>
-/// Represents an individual medication item in a transaction
-/// </summary>
 public class TransactionItem : Entity
 {
-    /// <summary>
-    /// Foreign key to Transaction
-    /// </summary>
     public int TransactionId { get; private set; }
-
-    /// <summary>
-    /// Foreign key to Medication
-    /// </summary>
     public int MedicationId { get; private set; }
-
-    /// <summary>
-    /// Navigation property to Medication
-    /// </summary>
     public virtual Medication? Medication { get; private set; }
-
-    /// <summary>
-    /// Quantity purchased
-    /// </summary>
     public int Quantity { get; private set; }
-
-    /// <summary>
-    /// Unit price at time of purchase
-    /// </summary>
     public Money UnitPrice { get; private set; }
-
-    /// <summary>
-    /// Total price (Quantity * UnitPrice)
-    /// </summary>
     public Money TotalPrice { get; private set; }
-
-    /// <summary>
-    /// Private constructor for Entity Framework Core
-    /// </summary>
     private TransactionItem() : base()
     {
         UnitPrice = new Money(0);
         TotalPrice = new Money(0);
     }
 
-    /// <summary>
-    /// Constructor for transaction item
-    /// </summary>
     public TransactionItem(int transactionId, int medicationId, int quantity, Money unitPrice)
     {
         if (transactionId <= 0)
@@ -470,9 +306,6 @@ public class TransactionItem : Entity
         TotalPrice = unitPrice * quantity;
     }
 
-    /// <summary>
-    /// Updates quantity
-    /// </summary>
     public void UpdateQuantity(int newQuantity)
     {
         if (newQuantity <= 0)
