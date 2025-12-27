@@ -1,9 +1,5 @@
 namespace PharmacySystem.Console.Utilities;
 
-/// <summary>
-/// Static utility class for console UI helpers
-/// Demonstrates static methods for console formatting and input
-/// </summary>
 public static class ConsoleHelper
 {
     #region Colors
@@ -17,10 +13,6 @@ public static class ConsoleHelper
     #endregion
 
     #region Display Methods (Static Methods)
-
-    /// <summary>
-    /// Prints a header with formatting
-    /// </summary>
     public static void PrintHeader(string title)
     {
         System.Console.ForegroundColor = HeaderColor;
@@ -31,20 +23,12 @@ public static class ConsoleHelper
         System.Console.ResetColor();
         System.Console.WriteLine();
     }
-
-    /// <summary>
-    /// Prints a success message
-    /// </summary>
     public static void PrintSuccess(string message)
     {
         System.Console.ForegroundColor = SuccessColor;
         System.Console.WriteLine($"✓ {message}");
         System.Console.ResetColor();
     }
-
-    /// <summary>
-    /// Prints an error message
-    /// </summary>
     public static void PrintError(string message)
     {
         System.Console.ForegroundColor = ErrorColor;
@@ -52,9 +36,6 @@ public static class ConsoleHelper
         System.Console.ResetColor();
     }
 
-    /// <summary>
-    /// Prints a warning message
-    /// </summary>
     public static void PrintWarning(string message)
     {
         System.Console.ForegroundColor = WarningColor;
@@ -62,9 +43,6 @@ public static class ConsoleHelper
         System.Console.ResetColor();
     }
 
-    /// <summary>
-    /// Prints an info message
-    /// </summary>
     public static void PrintInfo(string message)
     {
         System.Console.ForegroundColor = InfoColor;
@@ -72,17 +50,11 @@ public static class ConsoleHelper
         System.Console.ResetColor();
     }
 
-    /// <summary>
-    /// Prints a separator line
-    /// </summary>
     public static void PrintSeparator()
     {
         System.Console.WriteLine("───────────────────────────────────────────────────────────────");
     }
 
-    /// <summary>
-    /// Prints a section title
-    /// </summary>
     public static void PrintSection(string title)
     {
         System.Console.WriteLine();
@@ -96,9 +68,6 @@ public static class ConsoleHelper
 
     #region Input Methods (Static Methods with Function Overloading)
 
-    /// <summary>
-    /// Gets integer input from user
-    /// </summary>
     public static int GetIntInput(string prompt)
     {
         while (true)
@@ -112,9 +81,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets integer input with validation (Function Overloading)
-    /// </summary>
     public static int GetIntInput(string prompt, int min, int max)
     {
         while (true)
@@ -128,9 +94,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets decimal input from user
-    /// </summary>
     public static decimal GetDecimalInput(string prompt)
     {
         while (true)
@@ -144,9 +107,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets decimal input with validation (Function Overloading)
-    /// </summary>
     public static decimal GetDecimalInput(string prompt, decimal min, decimal max)
     {
         while (true)
@@ -160,18 +120,12 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets string input from user
-    /// </summary>
     public static string GetStringInput(string prompt)
     {
         System.Console.Write($"{prompt}: ");
         return System.Console.ReadLine() ?? string.Empty;
     }
 
-    /// <summary>
-    /// Gets non-empty string input (Function Overloading)
-    /// </summary>
     public static string GetStringInput(string prompt, bool required)
     {
         while (true)
@@ -185,9 +139,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets date input from user
-    /// </summary>
     public static DateTime GetDateInput(string prompt)
     {
         while (true)
@@ -201,9 +152,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets date input with validation (Function Overloading)
-    /// </summary>
     public static DateTime GetDateInput(string prompt, DateTime minDate, DateTime maxDate)
     {
         while (true)
@@ -217,9 +165,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Gets boolean input (yes/no)
-    /// </summary>
     public static bool GetBoolInput(string prompt)
     {
         while (true)
@@ -236,9 +181,6 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Confirms an action
-    /// </summary>
     public static bool ConfirmAction(string message)
     {
         System.Console.WriteLine();
@@ -254,9 +196,6 @@ public static class ConsoleHelper
 
     #region Menu Methods (Static Methods)
 
-    /// <summary>
-    /// Displays a menu and gets user selection
-    /// </summary>
     public static int DisplayMenu(string title, params string[] options)
     {
         PrintHeader(title);
@@ -271,9 +210,6 @@ public static class ConsoleHelper
         return GetIntInput("Select an option", 0, options.Length);
     }
 
-    /// <summary>
-    /// Displays a menu with descriptions (Function Overloading)
-    /// </summary>
     public static int DisplayMenu(string title, Dictionary<string, string> optionsWithDescriptions)
     {
         PrintHeader(title);
@@ -299,17 +235,11 @@ public static class ConsoleHelper
 
     #region Utility Methods (Static Methods)
 
-    /// <summary>
-    /// Clears the console screen
-    /// </summary>
     public static void ClearScreen()
     {
         System.Console.Clear();
     }
 
-    /// <summary>
-    /// Pauses and waits for user input
-    /// </summary>
     public static void PauseForUser()
     {
         System.Console.WriteLine();
@@ -320,9 +250,6 @@ public static class ConsoleHelper
         System.Console.WriteLine();
     }
 
-    /// <summary>
-    /// Displays a loading animation
-    /// </summary>
     public static void ShowLoading(string message, int milliseconds = 1000)
     {
         System.Console.Write($"{message}");
@@ -336,9 +263,6 @@ public static class ConsoleHelper
         System.Console.WriteLine(" Done!");
     }
 
-    /// <summary>
-    /// Displays a table (simplified version)
-    /// </summary>
     public static void DisplayTable(string[] headers, List<string[]> rows)
     {
         // Calculate column widths
@@ -379,9 +303,6 @@ public static class ConsoleHelper
         System.Console.WriteLine();
     }
 
-    /// <summary>
-    /// Displays progress bar
-    /// </summary>
     public static void ShowProgressBar(int current, int total, string label = "Progress")
     {
         int barWidth = 40;
@@ -400,33 +321,21 @@ public static class ConsoleHelper
 
     #region Format Methods (Static Methods)
 
-    /// <summary>
-    /// Formats currency for display
-    /// </summary>
     public static string FormatCurrency(decimal amount)
     {
         return $"${amount:N2}";
     }
 
-    /// <summary>
-    /// Formats date for display
-    /// </summary>
     public static string FormatDate(DateTime date)
     {
         return date.ToString("yyyy-MM-dd");
     }
 
-    /// <summary>
-    /// Formats date and time for display (Function Overloading)
-    /// </summary>
     public static string FormatDate(DateTime date, bool includeTime)
     {
         return includeTime ? date.ToString("yyyy-MM-dd HH:mm:ss") : FormatDate(date);
     }
 
-    /// <summary>
-    /// Truncates string to specified length
-    /// </summary>
     public static string Truncate(string value, int maxLength)
     {
         if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
